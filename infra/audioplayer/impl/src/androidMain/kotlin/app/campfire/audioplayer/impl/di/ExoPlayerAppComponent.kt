@@ -19,6 +19,7 @@ import androidx.media3.extractor.DefaultExtractorsFactory
 import androidx.media3.extractor.mp3.Mp3Extractor
 import app.campfire.account.api.AccountManager
 import app.campfire.account.api.UserSessionManager
+import app.campfire.audioplayer.impl.XheAacCompatExtractorsFactory
 import app.campfire.audioplayer.impl.networking.AuthRefreshingHttpDataSource
 import app.campfire.audioplayer.impl.networking.CampfireLoadErrorHandlingPolicy
 import app.campfire.core.app.ApplicationInfo
@@ -112,12 +113,14 @@ interface ExoPlayerAppComponent {
       .setCache(simpleCache)
       .setUpstreamDataSourceFactory(authRetryFactory)
 
-    val extractorsFactory = DefaultExtractorsFactory()
+    val defaultExtractorsFactory = DefaultExtractorsFactory()
 
     if (settings.enableMp3IndexSeeking) {
       // https://exoplayer.dev/troubleshooting.html#why-is-seeking-inaccurate-in-some-mp3-files
-      extractorsFactory.setMp3ExtractorFlags(Mp3Extractor.FLAG_ENABLE_INDEX_SEEKING)
+      defaultExtractorsFactory.setMp3ExtractorFlags(Mp3Extractor.FLAG_ENABLE_INDEX_SEEKING)
     }
+
+    val extractorsFactory = XheAacCompatExtractorsFactory(defaultExtractorsFactory)
 
     return DefaultMediaSourceFactory(application, extractorsFactory)
       .setDataSourceFactory(
