@@ -18,4 +18,5 @@ VALUES ?;
 
 selectForMediaId:
 SELECT * FROM mediaChapters
-WHERE mediaId = ?;
+WHERE mediaId = ?
+ORDER BY start ASC;

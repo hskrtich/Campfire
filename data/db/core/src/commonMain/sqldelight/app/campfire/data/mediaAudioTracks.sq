@@ -39,4 +39,5 @@ VALUES ?;
 
 selectForMediaId:
 SELECT * FROM mediaAudioTracks
-WHERE mediaId = ?;
+WHERE mediaId = ?
+ORDER BY mediaIndex ASC;
